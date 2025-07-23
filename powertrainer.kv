@@ -1,0 +1,825 @@
+#:kivy 2.1.0
+ScreenManager:
+    Agenda:
+    AvaliacoesFeitas:
+    Avaliacoes:
+    Cadastro:
+    DentroDoGrupo:
+    EditarAvaliacoes:
+    EditarGrupo:
+    FazerAvaliacoes:
+    Grupos:
+    HomeScreen:
+    Login:
+    MensagemGrupo:
+    MeusGrupos:
+    MinhasAvaliacoes:
+    NovoGrupo:
+
+<Agenda>:
+    BoxLayout:
+        orientation: 'vertical'
+        
+        BoxLayout:
+            size_hint_y: 0.1
+            Button:
+                text: "<"
+                on_release: root.manager.current = 'home_screen'
+            Label:
+                text: 'Agenda'
+                font_size: 24
+                bold: True
+                color: 0, 0, 1, 1
+            Button:
+                text: ">"
+        
+        GridLayout:
+            cols: 7
+            rows: 5
+            spacing: 5
+            padding: [10, 20]
+            # Suponha que este seja um calendário estático como exemplo
+            Label:
+                text: "SEG"
+            Label:
+                text: "TER"
+            Label:
+                text: "QUA"
+            Label:
+                text: "QUI"
+            Label:
+                text: "SEX"
+            Label:
+                text: "SAB"
+            Label:
+                text: "DOM"
+            # Adicionar os dias do mês como Label
+            Label:
+                text: "1"
+            Label:
+                text: "2"
+            Label:
+                text: "3"
+            # E assim por diante até preencher o calendário
+        
+        Button:
+            text: "Selecionar"
+            size_hint_y: 0.1
+            background_color: 0, 0.5, 1, 1
+            on_release: root.manager.current = 'home'
+
+<AvaliacoesFeitas>:
+    BoxLayout:
+        orientation: 'vertical'
+
+        # Cabeçalho da tela
+        BoxLayout:
+            size_hint_y: None
+            height: 50
+            padding: [10, 0]
+            spacing: 10
+
+            Button:
+                text: 'Voltar'
+                size_hint_x: None
+                width: 80
+                on_release: root.voltar_home()
+
+            Label:
+                text: 'Avaliações Feitas'
+                font_size: '20sp'
+                halign: 'center'
+                valign: 'middle'
+                size_hint_x: 1
+
+            Button:
+                text: 'Minhas Avaliações'
+                size_hint_x: None
+                width: 150
+                on_release: root.ir_para_minhas_avaliacoes()
+
+        # ScrollView para as avaliações feitas
+        ScrollView:
+            do_scroll_x: False
+            do_scroll_y: True
+
+            # Aqui está o GridLayout com o ID correto
+            GridLayout:
+                id: avaliacao_grid  # Certifique-se de que o ID está correto
+                cols: 1
+                size_hint_y: None
+                height: self.minimum_height
+
+<Avaliacoes>:
+    BoxLayout:
+        orientation: 'vertical'
+
+        # Cabeçalho
+        BoxLayout:
+            size_hint_y: None
+            height: 50
+            padding: [10, 0]
+            spacing: 10
+
+            Button:
+                text: 'Voltar'
+                size_hint_x: None
+                width: 80
+                on_release: root.voltar_home()
+
+            Label:
+                text: 'Avaliações Recebidas'
+                font_size: '20sp'
+                halign: 'center'
+                valign: 'middle'
+                size_hint_x: 1
+
+        ScrollView:
+            do_scroll_x: False
+            do_scroll_y: True
+
+            GridLayout:
+                cols: 1
+                size_hint_y: None
+                height: self.minimum_height
+
+                # Seção de mostrar avaliações
+                GridLayout:
+                    id: avaliacao_recebida_grid
+                    cols: 1
+                    size_hint_y: None
+                    height: self.minimum_height
+                    spacing: 10
+
+<Cadastro>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 20
+        spacing: 20
+
+        Label:
+            text: "[b]Faça seu cadastro\nno [color=#0000FF]PowerTrainer![/color][/b]"
+            markup: True
+            font_size: '20sp'
+
+        TextInput:
+            id: nome_input
+            hint_text: 'Nome'
+
+        TextInput:
+            id: email_input
+            hint_text: 'Email'
+
+        TextInput:
+            id: senha_input
+            hint_text: 'Senha'
+            password: True
+
+        TextInput:
+            id: nivel_de_treino_input
+            hint_text: 'Nível de Treino'
+
+        TextInput:
+            id: objetivo_input
+            hint_text: 'Objetivo'
+
+        TextInput:
+            id: genero_input
+            hint_text: 'Gênero'
+
+        BoxLayout:
+            size_hint_y: None
+            height: 50
+            spacing: 10
+
+            Button:
+                text: 'Tirar Foto'
+                on_press: root.tirar_foto(self)
+
+            Button:
+                text: 'Importar Foto'
+                on_press: root.importar_foto(self)
+
+        BoxLayout:
+            size_hint_y: None
+            height: 50
+            spacing: 10
+
+            CheckBox:
+                id: termos_checkbox
+
+            Label:
+                text: "Concordo com os Termos e Condições"
+
+        BoxLayout:
+            size_hint_y: None
+            height: 50
+            spacing: 10
+
+            Button:
+                text: 'Finalizar cadastro'
+                size_hint_x: None
+                width: 200
+                on_press: root.on_cadastrar(self)
+
+            Button:
+                text: 'Já tenho conta'
+                size_hint_x: None
+                width: 200
+                on_press: root.go_to_login(self)
+
+<DentroDoGrupo>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 10
+        spacing: 10
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: 50
+
+            Button:
+                text: "Voltar"
+                size_hint_x: None
+                width: 50
+                on_release: root.voltar()  # Função no backend para voltar
+            Button:
+                text: "Editar"
+                size_hint_x: None
+                width: 50
+                on_release: root.EditarGrupo()  # Função no backend para voltar
+            Label:
+                id: nome_grupo  # Será preenchido pelo backend
+                text: "Nome do Grupo"  # Texto padrão até ser atualizado
+                font_size: '24sp'
+                bold: True
+
+            Button:
+                text: "Chat"
+                size_hint_x: None
+                width: 50
+                on_release: root.abrir_chat()  # Função no backend
+
+            Button:
+                text: "Confirmar"
+                size_hint_x: None
+                width: 50
+                on_release: root.confirmar_evento()  # Função no backend
+
+            Button:
+                text: "Sair"
+                size_hint_x: None
+                width: 50
+                on_release: root.sair_grupo()  # Função no backend
+        ScrollView:
+        Label:
+            id: info_grupo  # Será preenchido pelo backend
+            text: "Informações do Grupo"
+            font_size: '16sp'
+
+        Label:
+            text: "Descrição"
+            font_size: '20sp'
+            bold: True
+
+        Label:
+            id: descricao_grupo  # Será preenchido pelo backend
+            text: "Descrição do Grupo"
+            font_size: '16sp'
+
+        Label:
+            text: "Participantes"
+            font_size: '20sp'
+            bold: True
+
+        
+            GridLayout:
+                id: participantes_layout  # Os participantes serão adicionados aqui
+                cols: 1
+                spacing: 10
+                size_hint_y: None
+                height: self.minimum_height
+
+<EditarAvaliacoes>:
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: "Avalie a Habilidade (1 a 5)"
+        TextInput:
+            id: habilidade_input
+            input_filter: 'int'  # Apenas números
+            multiline: False
+            hint_text: "Digite um valor de 1 a 5"
+            on_text_validate: if int(self.text) < 1 or int(self.text) > 5: self.text = ''
+        Label:
+            text: "Avalie a Personalidade (1 a 5)"
+        TextInput:
+            id: personalidade_input
+            input_filter: 'int'  # Apenas números
+            multiline: False
+            hint_text: "Digite um valor de 1 a 5"
+            on_text_validate: if int(self.text) < 1 or int(self.text) > 5: self.text = ''
+        Label:
+            text: "Comentário"
+        TextInput:
+            id: comentario_input
+            hint_text: "Deixe um comentário"
+            multiline: True
+        Button:
+            text: "Enviar Avaliação"
+            on_release: root.enviar_avaliacao()
+<EditarGrupo>:
+    BoxLayout:
+        orientation: 'vertical'
+        
+        Label:
+            text: "Data e Hora do Evento"
+        TextInput:
+            id: data_hora_input
+            hint_text: "Digite a data e hora (AAAA-MM-DD HH:MM:SS)"
+            multiline: False
+
+        Label:
+            text: "Local do Evento"
+        TextInput:
+            id: local_input
+            input_filter: 'int'
+            hint_text: "Digite o ID do local"
+            multiline: False
+
+        Label:
+            text: "Evento Confirmado"
+        TextInput:
+            id: confirmado_input
+            hint_text: "Digite 1 para sim, 0 para não"
+            input_filter: 'int'
+            multiline: False
+
+        Label:
+            text: "Limite de Jogadores"
+        TextInput:
+            id: limite_jogadores_input
+            input_filter: 'int'
+            hint_text: "Digite o limite de jogadores"
+            multiline: False
+
+        Button:
+            text: "Salvar Alterações"
+            on_release: root.salvar_evento()
+           
+<FazerAvaliacoes>:
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: "Avalie a Habilidade (1 a 5)"
+        TextInput:
+            id: habilidade_input
+            input_filter: 'int'  # Apenas números
+            multiline: False
+            hint_text: "Digite um valor de 1 a 5"
+            on_text_validate: if int(self.text) < 1 or int(self.text) > 5: self.text = ''
+        Label:
+            text: "Avalie a Personalidade (1 a 5)"
+        TextInput:
+            id: personalidade_input
+            input_filter: 'int'  # Apenas números
+            multiline: False
+            hint_text: "Digite um valor de 1 a 5"
+            on_text_validate: if int(self.text) < 1 or int(self.text) > 5: self.text = ''
+        Label:
+            text: "Comentário"
+        TextInput:
+            id: comentario_input
+            hint_text: "Deixe um comentário"
+            multiline: True
+        Button:
+            text: "Enviar Avaliação"
+            on_release: root.enviar_avaliacao()
+            
+<Grupos>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 20
+        spacing: 10
+
+        # Primeira parte: Cabeçalho com botões e label
+        BoxLayout:
+            size_hint_y: None
+            height: 50  # Definindo altura do cabeçalho
+            padding: 5
+            spacing: 5
+
+            Button:
+                text: 'Voltar'
+                size_hint_x: None
+                width: 80
+                on_release: root.voltar_home()
+
+            Label:
+                text: 'Grupos'
+                font_size: '24sp'
+                halign: 'center'
+                valign: 'middle'
+                size_hint_x: 1
+
+            Button:
+                text: 'Filtrar'
+                size_hint_x: None
+                width: 80
+                on_release: root.filtrar_grupos()
+
+        # Segunda parte: conteúdo onde você vai adicionar o layout dos grupos
+        BoxLayout:
+            orientation: 'vertical'
+            padding: 10
+            spacing: 10
+
+            ScrollView:  # Adicionando um ScrollView para permitir rolagem dos grupos
+                GridLayout:
+                    id: grupo_grid
+                    cols: 1
+                    padding: 10
+                    spacing: 10
+                    size_hint_y: None
+                    height: 200  # Para expandir dinamicamente
+                    
+<HomeScreen>:
+    name: 'home_screen'
+    BoxLayout:
+        orientation: 'vertical'
+        
+        # Cabeçalho com o nome do app
+        BoxLayout:
+            size_hint_y: 0.15
+            padding: 10
+            canvas.before:
+                Color:
+                    rgba: 0, 0.5, 1, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            Label:
+                text: "PowerTrainer"
+                font_size: 32  # Ajuste do tamanho da fonte
+                color: 1, 1, 1, 1
+                halign: 'left'
+                valign: 'middle'
+        
+        # Mensagem de atividade agendada
+        BoxLayout:
+            size_hint_y: 0.1
+            orientation: 'vertical'
+            padding: 10, 0
+            Label:
+                text: "Você tem uma atividade agendada hoje!"
+                font_size: 18
+                color: 0, 0, 0, 1
+                halign: 'left'
+                valign: 'middle'
+                size_hint_y: None
+                height: 30
+
+            BoxLayout:
+                Label:
+                    text: "[b]Zumba[/b]"
+                    font_size: 24
+                    markup: True  # Para deixar "Zumba" em negrito
+                    color: 0, 0, 1, 1  # Azul para destacar
+                    halign: 'center'
+                Label:
+                    text: "19h"
+                    font_size: 20
+                    halign: 'center'
+                Label:
+                    text: "Academia D-tox"
+                    font_size: 20
+                    halign: 'center'
+
+        # Botões de navegação com ícones
+        GridLayout:
+            cols: 3
+            spacing: 20  # Mais espaçamento entre os ícones
+            padding: 20, 10
+            size_hint_y: 0.75
+
+            Button:
+                text: ""  # Removi o texto do botão, pois a imagem já contém o texto
+                size_hint: 0.2, 0.2  # Reduzindo o tamanho da imagem (proporção)
+                background_normal: 'assets/icon1.png'
+                border: 0,0,0,0
+                keep_ratio: True
+                allow_stretch: False
+                on_release: root.on_button_click(1)
+
+            Button:
+                text: ""
+                size_hint: 0.2, 0.2
+                background_normal: 'assets/icon2.png'
+                border: 0,0,0,0
+                keep_ratio: True
+                allow_stretch: True
+                on_release: root.on_button_click(2)
+
+            Button:
+                text: ""
+                size_hint: 0.2, 0.2
+                background_normal: 'assets/icon3.png'
+                border: 0,0,0,0
+                keep_ratio: True
+                allow_stretch: True
+                on_release: root.on_button_click(3)
+
+            Button:
+                text: ""
+                size_hint: 0.2, 0.2
+                background_normal: 'assets/icon4.png'
+                border: 0,0,0,0
+                keep_ratio: True
+                allow_stretch: True
+                on_release: root.on_button_click(4)
+
+            Button:
+                text: ""
+                size_hint: 0.2, 0.2
+                background_normal: 'assets/icon5.png'
+                border: 0,0,0,0
+                keep_ratio: True
+                allow_stretch: True
+                on_release: root.on_button_click(5)
+
+            Button:
+                text: ""
+                size_hint: 0.2, 0.2
+                background_normal: 'assets/icon6.png'
+                border: 0,0,0,0
+                keep_ratio: True
+                allow_stretch: True
+                on_release: root.on_button_click(6)
+<Login>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 20
+        spacing: 10
+
+        Label:
+            text: 'Bem vindo ao [b]PowerTrainer[/b]'
+            markup: True
+            font_size: 32
+            halign: 'center'
+            size_hint_y: None
+            height: 50
+
+        Label:
+            text: 'Preencha os dados do login para acessar'
+            font_size: 16
+            halign: 'center'
+            size_hint_y: None
+            height: 30
+
+        TextInput:
+            id: user_input
+            hint_text: 'Email da conta'
+            font_size: 18
+            multiline: False
+
+        TextInput:
+            id: password_input
+            hint_text: 'Senha'
+            password: True
+            font_size: 18
+            multiline: False
+
+        Button:
+            text: 'ENTRAR'
+            font_size: 18
+            size_hint_y: None
+            height: 50
+            background_color: (0, 0.5, 1, 1)
+            on_press: root.on_login(self)
+
+        Button:
+            text: 'Cadastre-se'
+            font_size: 16
+            size_hint_y: None
+            height: 50
+            background_color: (0, 1, 0, 1)
+            on_press: root.on_register(self)
+
+<MensagemGrupo>:
+    BoxLayout:
+        orientation: 'vertical'
+
+        # Topo com nome do grupo centralizado
+        BoxLayout:
+            size_hint_y: 0.1
+
+            Button:
+                text: 'Voltar'
+                size_hint_x: 0.2
+                on_release: root.voltar()
+
+            Label:
+                id: nome_grupo
+                text: 'Nome do Grupo'  # Aqui o nome do grupo será substituído pelo nome vindo do banco de dados
+                size_hint_x: 0.6  # Centralizando o nome do grupo
+                halign: 'center'   # Alinhamento centralizado
+                valign: 'middle'   # Alinhamento vertical
+                text_size: self.size  # Ajusta para o centro
+
+            BoxLayout:
+                size_hint_x: 0.2  # Espaço vazio à direita para balancear o layout
+
+        # Área de mensagens
+        ScrollView:
+            id: scroll_view
+            GridLayout:
+                id: mensagens_layout
+                cols: 1
+                size_hint_y: None
+                height: self.minimum_height
+                row_default_height: 40
+                row_force_default: True
+
+        # Caixa de entrada de mensagem
+        BoxLayout:
+            size_hint_y: 0.15
+            padding: [10, 20]
+            spacing: 10
+
+            # Caixa de texto menor, centralizada e mais alta
+            TextInput:
+                id: text_input
+                hint_text: 'Type a message'
+                multiline: False
+                size_hint_x: 0.7  # Agora ocupa 70% da largura
+                height: 50  # Define a altura da caixa
+                pos_hint: {'center_x': 0.5}
+
+            # Botão "Send" menor e mais alto
+            Button:
+                text: 'Send'
+                size_hint_x: 0.15  # Ocupa 15% da largura
+                height: 50  # Define uma altura maior
+                on_press: root.enviar_mensagem(self)
+
+<MinhasAvaliacoes>:
+    BoxLayout:
+        orientation: 'vertical'
+
+        # Cabeçalho da tela
+        BoxLayout:
+            size_hint_y: None
+            height: 50
+            padding: [10, 0]
+            spacing: 10
+
+            Button:
+                text: 'Voltar'
+                size_hint_x: None
+                width: 80
+                on_release: root.voltar()
+
+            Label:
+                text: 'Minhas Avaliações'
+                font_size: '20sp'
+                halign: 'center'
+                valign: 'middle'
+                size_hint_x: 1
+
+            Button:
+                text: 'Avaliações Feitas'
+                size_hint_x: None
+                width: 150
+                on_release: root.ir_para_avaliacoes_feitas()
+
+        # ScrollView para exibir as avaliações
+        ScrollView:
+            do_scroll_x: False
+            do_scroll_y: True
+
+            # GridLayout onde as avaliações serão adicionadas dinamicamente
+            GridLayout:
+                id: avaliacao_grid  # Certifique-se de que o ID está correto
+                cols: 1
+                size_hint_y: None
+                height: self.minimum_height
+                row_default_height: '120dp'
+                padding: '10dp'
+                spacing: '10dp'
+                
+<NovoGrupo>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(10), dp(10)
+        spacing: dp(10)
+
+        # Barra superior com o título e botão de voltar
+        BoxLayout:
+            size_hint_y: None
+            height: dp(50)
+            spacing: dp(10)
+            Button:
+                text: "<"
+                on_press: app.root.current = 'grupos'
+            Label:
+                text: "Novo Grupo"
+                font_size: '24sp'
+                bold: True
+
+        # Spinner para escolher a Atividade
+        Label:
+            text: "Atividade"
+        Spinner:
+            id: spinner_atividade
+            text: "Escolher"
+            values: ["Futebol", "Vôlei", "Basquete", "Corrida"]
+
+        # Spinner para escolher a Cidade
+        Label:
+            text: "Cidade"
+        Spinner:
+            id: spinner_cidade
+            text: "Escolher"
+            values: ["São Paulo", "Rio de Janeiro", "Belo Horizonte", "Porto Alegre"]
+
+        # Data (sem mudança)
+        Label:
+            text: "Data"
+        TextInput:
+            id: data_input
+            hint_text: "DD/MM/AAAA"
+            input_filter: lambda text, from_undo: text[:10] if len(text) <= 10 else ''
+
+        # Horário formatado
+        Label:
+            text: "Horário"
+        TextInput:
+            id: horario_input
+            hint_text: "HH:MM"
+            input_filter: lambda text, from_undo: text[:5] if len(text) <= 5 else ''
+            multiline: False
+
+        # Spinner para escolher o Nível
+        Label:
+            text: "Nível"
+        Spinner:
+            id: spinner_nivel
+            text: "Escolher"
+            values: ["Iniciante", "Intermediário", "Avançado"]
+
+        # Botão Criar
+        Button:
+            text: "Criar"
+            size_hint_y: None
+            height: dp(50)
+            on_press: root.criar_grupo()
+
+<MeusGrupos>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 20
+        spacing: 10
+
+        # Primeira parte: Cabeçalho com botões e label
+        BoxLayout:
+            size_hint_y: None
+            height: 50  # Definindo altura do cabeçalho
+            padding: 5
+            spacing: 5
+
+            Button:
+                text: 'Voltar'
+                size_hint_x: None
+                width: 80
+                on_release: root.voltar_home()
+
+            Label:
+                text: 'Grupos que faço parte'
+                font_size: '24sp'
+                halign: 'center'
+                valign: 'middle'
+                size_hint_x: 1
+
+            Button:
+                text: 'Filtrar'
+                size_hint_x: None
+                width: 80
+                on_release: root.filtrar_grupos()
+
+        # Segunda parte: conteúdo onde você vai adicionar o layout dos grupos
+        BoxLayout:
+            orientation: 'vertical'
+            padding: 10
+            spacing: 10
+
+            ScrollView:  # Adicionando um ScrollView para permitir rolagem dos grupos
+                GridLayout:
+                    id: grupo_grid
+                    cols: 1
+                    padding: 10
+                    spacing: 10
+                    size_hint_y: None
+                    height: 200  # Para expandir dinamicamente
+
+

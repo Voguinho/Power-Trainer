@@ -1,0 +1,121 @@
+
+-- Tabela: Usuario
+CREATE TABLE Usuario (
+    id INT PRIMARY KEY,
+    nome VARCHAR(50),
+    email VARCHAR(80),
+    senha VARCHAR(80),
+    imagem_perfil BLOB,
+    genero VARCHAR(10),
+    nivel_de_treino VARCHAR(10),
+    nota_geral DOUBLE,
+    objetivo VARCHAR(100),
+    data_criacao DATE
+);
+
+-- Tabela: Local
+CREATE TABLE Local (
+    id INT PRIMARY KEY,
+    nome VARCHAR(115),
+    CEP DOUBLE,
+    cidade VARCHAR(100),
+    rua VARCHAR(20),
+    numero DOUBLE,
+    bairro VARCHAR(20)
+);
+
+-- Tabela: Esporte
+CREATE TABLE Esporte (
+    id INT PRIMARY KEY,
+    nome VARCHAR(115)
+);
+
+-- Tabela: Grupo
+CREATE TABLE Grupo (
+    id INT PRIMARY KEY,
+    atividade VARCHAR(100),
+    horario DATE,
+    genero VARCHAR(100),
+    limite_membros DOUBLE,
+    descricao VARCHAR(2000),
+    limite_pelada DOUBLE,
+    esportes_id INT,
+    Local_id INT,
+    FOREIGN KEY (esportes_id) REFERENCES Esporte(id),
+    FOREIGN KEY (Local_id) REFERENCES Local(id)
+);
+
+-- Tabela: Avaliacoes
+CREATE TABLE Avaliacoes (
+    id INT PRIMARY KEY,
+    comentario VARCHAR(500),
+    avaliacao DOUBLE,
+    personalidade DOUBLE,
+    habilidade DOUBLE,
+    usuario_id INT,
+    grupo_id INT,
+    FOREIGN KEY (usuario_id) REFERENCES Usuario(id),
+    FOREIGN KEY (grupo_id) REFERENCES Grupo(id)
+);
+
+-- Tabela: Usuario_grupo
+CREATE TABLE Usuario_grupo (
+    id INT PRIMARY KEY,
+    usuario_id INT,
+    grupo_id INT,
+    estrelas DOUBLE,
+    confirmacao VARCHAR(3),
+    pago VARCHAR(3),
+    adm VARCHAR(3),
+    FOREIGN KEY (usuario_id) REFERENCES Usuario(id),
+    FOREIGN KEY (grupo_id) REFERENCES Grupo(id)
+);
+
+-- Tabela: Calendario
+CREATE TABLE Calendario (
+    id INT PRIMARY KEY,
+    parceiro VARCHAR(50),
+    comentario VARCHAR(100),
+    data_hora DATETIME,
+    usuario_id INT,
+    FOREIGN KEY (usuario_id) REFERENCES Usuario(id)
+);
+
+-- Tabela: Favoritos
+CREATE TABLE Favoritos (
+    id INT PRIMARY KEY,
+    nome VARCHAR(50),
+    usuariofavorito_id INT,
+    data_criacao DATE,
+    FOREIGN KEY (usuariofavorito_id) REFERENCES Usuario(id)
+);
+
+-- Tabela: Chat
+CREATE TABLE Chat (
+    id INT PRIMARY KEY,
+    ultima_mensagem VARCHAR(500),
+    data_criacao DATE
+);
+
+-- Tabela: Mensagem
+CREATE TABLE Mensagem (
+    id INT PRIMARY KEY,
+    mensagem VARCHAR(500),
+    tipo_msg VARCHAR(20),
+    midia BLOB,
+    data_criacao DATE,
+    usuario_id INT,
+    chat_id INT,
+    FOREIGN KEY (usuario_id) REFERENCES Usuario(id),
+    FOREIGN KEY (chat_id) REFERENCES Chat(id)
+);
+
+-- Tabela: Usuario_chat
+CREATE TABLE Usuario_chat (
+    id INT PRIMARY KEY,
+    usuario_id INT,
+    chat_id INT,
+    adm VARCHAR(3),
+    FOREIGN KEY (usuario_id) REFERENCES Usuario(id),
+    FOREIGN KEY (chat_id) REFERENCES Chat(id)
+);
